@@ -1,9 +1,16 @@
-import React from "react";
-
+import { SettingsProvider } from "./Context/Settings";
+import HeaderGroup from "./Components/Header";
+import Footer from "./Components/Footer";
 import Todo from "./Components/ToDo";
 
-export default class App extends React.Component {
-  render() {
-    return <Todo />;
-  }
-}
+const App = () => {
+  return (
+    <SettingsProvider>
+      <HeaderGroup />
+      <Todo />
+      <Footer />
+    </SettingsProvider>
+  );
+};
+
+export default App;
