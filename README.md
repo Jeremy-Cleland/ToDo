@@ -100,4 +100,4 @@
 
 ### UML
 
-![UML](./src/assets/uml.png)
+![UML](./assets/UML.png)
