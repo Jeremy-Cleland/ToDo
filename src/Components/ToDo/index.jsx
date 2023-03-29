@@ -1,61 +1,61 @@
 import { useEffect } from "react";
-
-import useForm from "../../hooks/form";
-
+import useForm from "../../Hooks/form";
+import { v4 as uuid } from "uuid";
 import List from "../List";
 
 import { useSettingsContext } from "../../Context/Settings";
 import {
   AppShell,
   Button,
+  Box,
+  Center,
   Navbar,
-  Grid,
   Text,
+  Title,
   Slider,
   TextInput,
   createStyles,
-  Paper,
 } from "@mantine/core";
 
-import { v4 as uuid } from "uuid";
-
-const useStyles = createStyles((theme) => ({
-  root: {
-    backgroundColor: "#121212",
-    height: "100vh",
-    border: "none",
-  },
-
+const useStyles = createStyles(() => ({
   Navbar: {
-    backgroundColor: "#121212",
+    backgroundColor: "#1D1F20",
     height: "100vh",
     border: "none",
-  },
-  Aside: {
-    backgroundColor:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[4]
-        : theme.colors.dark[7],
-    // color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    padding: "1rem",
+    boxShadow: "8 0px 0px 8px rgba(0, 0, 0, 0.26)",
+    fontFamily: "Caveat, cursive",
+    borderRadius: "12px",
   },
   AppShell: {
-    backgroundColor: "#fff",
-    // color: theme.colorScheme === "dark" ? theme.white : theme.black,
+    backgroundColor: "#171717",
+    color: "#646E7A",
+    maxHeight: "87vh",
+    marginTop: "-5vh",
+    fontFamily: "Caveat, cursive",
   },
   form: {
-    backgroundColor: "#fff",
+    marginTop: "20vh",
+    backgroundColor: "#454C55",
+    color: "#78838F",
     height: "60vh",
     padding: "1rem",
+    textAlign: "left",
+    border: "#303030 1px solid",
+    fontFamily: "Caveat, cursive",
+    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.26)",
+    borderRadius: "12px",
+  },
 
-    input: {
-      backgroundColor: "#fff",
-      padding: "1rem",
-      margin: "2rem",
-      width: 300,
-      alignContent: "center",
-      border: "#303030 1px solid",
-    },
-    // color: theme.colorScheme === "dark" ? theme.white : theme.black,
+  input: {
+    backgroundColor: "#fff",
+    color: "#000",
+    padding: "1rem",
+    margin: "2rem",
+    width: 300,
+    alignContent: "center",
+    border: "#303030 1px solid",
+    fontFamily: "Caveat, cursive",
   },
 }));
 
@@ -103,29 +103,31 @@ const Todo = () => {
 
   return (
     <AppShell
-      navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
+      zIndex={10}
       className={classes.AppShell}
+      sx={{ fontFamily: "Caveat, cursive" }}
+      fixed
       navbar={
-        <Paper shadow="xl" radius="lg" p="md" withBorder>
-          <Navbar
-            className={classes.Navbar}
-            height={600}
-            p="lg"
-            hiddenBreakpoint="sm"
-            dz
-            open={state.isOpen}
-            width={{ sm: 300, lg: 400, base: "100%" }}
-          >
-            <Navbar.Section grow mt="lg">
+        <Navbar
+          className={classes.Navbar}
+          height={700}
+          hiddenBreakpoint="sm"
+          open={state.isOpen}
+          width={{ sm: 300, lg: 500, base: "100%" }}
+        >
+          <Navbar.Section>
+            <Box maw={400} mx="auto">
               <form className={classes.form} onSubmit={handleSubmit}>
                 <TextInput
                   className={classes.input}
                   label="To Do Item"
                   name="text"
+                  mt="md"
                   onChange={handleChange}
                 />
                 <TextInput
+                  mt="md"
+                  c="white"
                   className={classes.input}
                   label="Assigned To"
                   name="assignee"
@@ -140,98 +142,27 @@ const Todo = () => {
                   max={5}
                   defaultValue={state.difficulty}
                 />
-                <Text className={classes.input}>Difficulty</Text>
+                <Text sx={{ fontFamily: "Caveat, cursive" }}>Difficulty</Text>
                 <Button className="button" type="submit">
                   Add Item
                 </Button>
               </form>
-            </Navbar.Section>
-            <Navbar.Section></Navbar.Section>
-          </Navbar>
-        </Paper>
+            </Box>
+          </Navbar.Section>
+        </Navbar>
       }
-      styles={(theme) => ({
-        main: {
-          backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[2]
-              : theme.colors.dark[9],
-        },
-      })}
     >
-      <Grid className={classes.root}>
-        <Text className={classes.input}>
-          There are {incomplete} Items To Complete
-        </Text>
+      <Center pt={100}>
+        <Title>There are {incomplete} Items To Complete</Title>
+      </Center>
+      <Center>
         <List
           list={list}
           toggleComplete={toggleComplete}
           deleteItem={deleteItem}
         />
-      </Grid>
+      </Center>
     </AppShell>
-
-    //   <>
-    //     <header data-testid="todo-header">
-    //       <h1 data-testid="todo-h1">To Do List: {incomplete} items pending</h1>
-    //     </header>
-
-    //     <form onSubmit={handleSubmit}>
-    //       <h2>Add To Do Item</h2>
-
-    //       <label>
-    //         <span>To Do Item</span>
-    //         <input
-    //           onChange={handleChange}
-    //           name="text"
-    //           type="text"
-    //           placeholder="Item Details"
-    //         />
-    //       </label>
-
-    //       <label>
-    //         <span>Assigned To</span>
-    //         <input
-    //           onChange={handleChange}
-    //           name="assignee"
-    //           type="text"
-    //           placeholder="Assignee Name"
-    //         />
-    //       </label>
-
-    //       <label>
-    //         <span>Difficulty</span>
-    //         <input
-    //           onChange={handleChange}
-    //           defaultValue={state.difficulty}
-    //           type="range"
-    //           min={1}
-    //           max={5}
-    //           name="difficulty"
-    //         />
-    //       </label>
-
-    //       <label htmlFor="submit">
-    //         <button type="submit">Add Item</button>
-    //       </label>
-    //     </form>
-
-    //     {list.map((item) => (
-    //       <div key={item.id}>
-    //         <p>{item.text}</p>
-    //         <p>
-    //           <small>Assigned to: {item.assignee}</small>
-    //         </p>
-    //         <p>
-    //           <small>Difficulty: {item.difficulty}</small>
-    //         </p>
-    //         <button onClick={() => toggleComplete(item.id)}>
-    //           Complete: {item.complete.toString()}
-    //         </button>
-    //         <hr />
-    //       </div>
-    //     ))}
-    //   </>
   );
 };
 
