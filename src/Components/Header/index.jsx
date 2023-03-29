@@ -1,31 +1,21 @@
-import {
-  MediaQuery,
-  Burger,
-  Title,
-  createStyles,
-  Container,
-} from "@mantine/core";
-
-import { useSettingsContext } from "../../Context/Settings";
+import { Title, createStyles } from "@mantine/core";
 
 const HeaderGroup = () => {
-  const { state, dispatch } = useSettingsContext();
-
-  function openSidebar() {
-    dispatch({ type: "OPEN_SIDEBAR", payload: true });
-  }
-
-  const useStyles = createStyles((theme) => ({
+  const useStyles = createStyles(() => ({
     Header: {
-      backgroundColor:
-        theme.colorScheme === "dark"
-          ? theme.colors.white
-          : theme.colors.dark[9],
-
-      color: theme.colorScheme === "dark" ? theme.white : theme.black,
+      backgroundColor: "#1D1F20",
+      position: "sticky",
+      top: 0,
+      zIndex: 1,
+      padding: "1rem",
+      marginBottom: "3vh",
+      height: 100,
+      textAlign: "center",
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.26)",
     },
     Title: {
-      color: theme.colorScheme === "light" ? theme.white : theme.black,
+      fontSize: "4rem",
+      fontFamily: "Caveat, cursive",
     },
   }));
 
@@ -33,20 +23,9 @@ const HeaderGroup = () => {
 
   return (
     <header className={classes.Header}>
-      <Container className={classes.inner}>
-        <Title order={1} ta="center" sx={{ fontFamily: "Caveat, cursive" }}>
-          TaskForce
-        </Title>
-
-        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-          <Burger
-            opened={state.isOpen}
-            onClick={openSidebar}
-            size="lg"
-            mr="xl"
-          />
-        </MediaQuery>
-      </Container>
+      <Title className={classes.Title} order={1}>
+        TaskForce
+      </Title>
     </header>
   );
 };
