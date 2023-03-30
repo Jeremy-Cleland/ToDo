@@ -1,5 +1,5 @@
 import React from "react";
-import MyGlobalStyles from "./Context/Styles/globalStyles";
+// import MyGlobalStyles from "./Context/Styles/globalStyles";
 import AuthProvider from "./Context/Auth";
 import AppRoutes from "./Routes/routes";
 import { SettingsProvider } from "./Context/Settings";
@@ -17,7 +17,7 @@ const App = () => {
       <AuthProvider>
         <SettingsProvider>
           <AppRoutes />
-          <MyGlobalStyles />
+          {/* <MyGlobalStyles /> */}
         </SettingsProvider>
       </AuthProvider>
     </MantineProvider>
