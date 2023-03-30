@@ -100,4 +100,11 @@
 
 ### UML
 
-![UML](./assets/UML.png)
+#### Main Page
+
+![UML](./assets/UML-Todo-main.png)
+
+
+#### Settings Page
+
+![UML](./assets/UML-Todo-settings.png)
