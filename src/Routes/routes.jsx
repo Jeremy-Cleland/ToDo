@@ -1,39 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Header from "../Components/Header";
-import Auth from "../Components/Auth";
+import { AuthContext } from "../Context/Auth";
 import Login from "../Components/Login";
 import ToDo from "../Components/ToDo";
 import Footer from "../Components/Footer";
 import SettingsForm from "../Components/SettingsForm";
 import HeaderComponent from "../Components/Header";
+import { When } from "react-if";
 
 const AppRoutes = () => {
+  const { loggedIn } = useContext(AuthContext);
   return (
     <>
       <BrowserRouter>
         <HeaderComponent />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Auth capability="read">
-                <ToDo />
-              </Auth>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <Auth capability="update">
-                <SettingsForm />
-              </Auth>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-        </Routes>
+        <When condition={loggedIn}>
+          <Routes>
+            <Route path="/" element={<ToDo />} />
+            <Route path="/settings" element={<SettingsForm />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </When>
+        <Footer />
       </BrowserRouter>
-      <Footer />
     </>
   );
 };

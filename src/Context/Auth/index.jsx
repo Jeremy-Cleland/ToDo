@@ -1,8 +1,8 @@
-import React, { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import cookie from "react-cookies";
 
-export const AuthContext = createContext();
+export const AuthContext = React.createContext();
 
 const testUsers = {
   admin: {
