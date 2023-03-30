@@ -1,70 +1,103 @@
-# Getting Started with Create React App
+# LAB - TO-DO App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Authors: Jeremy Cleland
 
-## Available Scripts
+## Problem Domain
 
-In the project directory, you can run:
+### Phase 1 Requirements
 
-### `npm start`
+- In Phase 1, we’re going to perform some refactoring of a Todo application built by another team. This application mixes application state and user settings at the top level and passes things around. It was a good proof of concept, but we need to make this production ready.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- #### Phase 1: Application Setup
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  - Create a Detailed UML.
+  - Properly modularize the application into separate components
+  - Implement the Context API to make some basic application settings available to components.
+    - Show three items by default.
+    - Hide completed items by default.
+    - Add the sort word ‘difficulty’ by default.
+  - Style the application using the [Mantine Component API](https://mantine.dev/pages/getting-started/)
 
-### `npm test`
+- ##### [Netlify-deployment](cleland-resty.netlify.app)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Phase 2 Requirements
 
-### `npm run build`
+- #### Phase 2: Persistence
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  - Implement a custom Form Hook.
+  - Implement a custom Ajax Hook.
+  - Connect to a live API for storing To Do Items.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Phase 3 Requirements
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- #### Phase 3: Settings and Global Context
 
-### `npm run eject`
+  - Implement user settings for displaying items.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Phase 4 Requirements
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- #### Phase 4: Authorization
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  - Require a login to access the list.
+  - Restrict access to adding, editing, deleting to certain user types.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Approach
 
-## Learn More
+- #### File Structure
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    ├── .github
+    │   ├── workflows
+    │   │   └── node.yml
+    ├── public
+    ├── src
+    │   ├── __tests__
+    │   │   ├── App.test.jsx (integration test)
+    │   ├── Components
+    │   │   ├── Footer
+    │   │   │   └── index.jsx
+    │   │   ├── Header
+    │   │   │   └── index.jsx
+    │   │   ├── List
+    │   │   │   └── index.jsx
+    │   │   ├── Todo
+    │   │   │   ├── index.jsx
+    │   │   │   └── styles.scss  
+    │   ├── Context
+    │   │   ├── Settings
+    │   │   │   ├── index.jsx
+    │   │   │   └── Settings.test.jsx (unit test)
+    │   ├── hooks
+    │   │   ├── form.js
+    │   │   └── styles.js (optional)
+    │   ├── App.jsx
+    │   └── index.js
+    ├── .gitignore
+    ├── package-lock.json
+    ├── package.json
+    └── README.md
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- #### Global State
 
-### Code Splitting
+  - Describe how the global state is consumed by the components:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+  - useForm():
+  
+### How to initialize/run your application (where applicable)
 
-### Analyzing the Bundle Size
+- `npm start`
+- `nodemon`
+- `node hub.js`
+- `node index.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Features / Routes
 
-### Making a Progressive Web App
+- GET
+- POST
+- PUT
+- Delete
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Links and Resources
 
-### Advanced Configuration
+### UML
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![UML](./assets/UML.png)
