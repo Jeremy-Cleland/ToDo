@@ -88,6 +88,9 @@ const HeaderComponent = () => {
           <Link className={classes.link} to="/settings">
             Settings
           </Link>
+          <Link className={classes.link} to="/login">
+            Login
+          </Link>
         </Group>
       </Navbar>
     </Header>
