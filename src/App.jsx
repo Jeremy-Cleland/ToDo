@@ -1,14 +1,23 @@
-import HeaderGroup from "./Components/Header";
-import Footer from "./Components/Footer";
-import Todo from "./Components/ToDo";
+import React from "react";
+// import MyGlobalStyles from "./Context/Styles/globalStyles";
+import AppRoutes from "./Routes/routes";
+import { SettingsProvider } from "./Context/Settings";
+import { MantineProvider } from "@mantine/core";
 
 const App = () => {
   return (
-    <>
-      <HeaderGroup />
-      <Todo />
-      <Footer fixed={true} />
-    </>
+    <MantineProvider
+      theme={{
+        colorScheme: "dark",
+      }}
+      withGlobalStyles
+      withNormalizeCSS
+    >
+      <SettingsProvider>
+        <AppRoutes />
+        {/* <MyGlobalStyles /> */}
+      </SettingsProvider>
+    </MantineProvider>
   );
 };
 

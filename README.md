@@ -1,116 +1,70 @@
-# LAB - TO-DO App
+# Getting Started with Create React App
 
-## Authors: Jeremy Cleland
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Problem Domain
+## Available Scripts
 
-### Phase 1 Requirements
+In the project directory, you can run:
 
-- In Phase 1, we’re going to perform some refactoring of a Todo application built by another team. This application mixes application state and user settings at the top level and passes things around. It was a good proof of concept, but we need to make this production ready.
+### `npm start`
 
-- #### Phase 1: Application Setup
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-  - Create a Detailed UML.
-  - Properly modularize the application into separate components
-  - Implement the Context API to make some basic application settings available to components.
-    - Show three items by default.
-    - Hide completed items by default.
-    - Add the sort word ‘difficulty’ by default.
-  - Style the application using the [Mantine Component API](https://mantine.dev/pages/getting-started/)
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
-- ##### [Netlify-deployment](cleland-resty.netlify.app)
+### `npm test`
 
-### Phase 2 Requirements
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- In Phase 2, we’re going to extend the functionality of our application by allowing the user to make some decisions on how they would like the application to function. Specifically, we’ll let them make changes to 2 settings.
-- #### Phase 2: Persistence
+### `npm run build`
 
-  - Implement a custom Form Hook.
-  - Implement a custom Ajax Hook.
-  - Connect to a live API for storing To Do Items.
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-  - Implement the Context API to make some basic application settings available to components.
-    - How many To Do Items to show at once
-    - Whether or not to show completed items.
-  
-- Provide the users with a form where they can change the values for those settings
-  - This should be given in the form of a new component, perhaps linked to from the main navigation.
-  - Hint: Use Browser Router to create the page/route/component for this.
-  - Once settings are updated, render the updated settings to the right of the “form”. Consider using `<Grid />`, `<Card />`, and `<When />` components.
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- Save the users choices in Local Storage.
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-  - Retrieve their preferences from Local Storage and apply them to the application on startup.
-### Phase 3 Requirements
+### `npm run eject`
 
-- #### Phase 3: Settings and Global Context
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-  - Implement user settings for displaying items.
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-### Phase 4 Requirements
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-- #### Phase 4: Authorization
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-  - Require a login to access the list.
-  - Restrict access to adding, editing, deleting to certain user types.
+## Learn More
 
-### Approach
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-- #### File Structure
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-    ├── .github
-    │   ├── workflows
-    │   │   └── node.yml
-    ├── public
-    ├── src
-    │   ├── __tests__
-    │   │   ├── App.test.jsx (integration test)
-    │   ├── Components
-    │   │   ├── Footer
-    │   │   │   └── index.jsx
-    │   │   ├── Header
-    │   │   │   └── index.jsx
-    │   │   ├── List
-    │   │   │   └── index.jsx
-    │   │   ├── Todo
-    │   │   │   ├── index.jsx
-    │   │   │   └── styles.scss  
-    │   ├── Context
-    │   │   ├── Settings
-    │   │   │   ├── index.jsx
-    │   │   │   └── Settings.test.jsx (unit test)
-    │   ├── hooks
-    │   │   ├── form.js
-    │   │   └── styles.js (optional)
-    │   ├── App.jsx
-    │   └── index.js
-    ├── .gitignore
-    ├── package-lock.json
-    ├── package.json
-    └── README.md
+### Code Splitting
 
-- #### Global State
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-  - Describe how the global state is consumed by the components:
+### Analyzing the Bundle Size
 
-  - useForm():
-  
-### How to initialize/run your application (where applicable)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-- `npm start`
-- `nodemon`
-- `node hub.js`
-- `node index.js`
+### Making a Progressive Web App
 
-### Features / Routes
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-- GET
-- POST
-- PUT
-- Delete
+### Advanced Configuration
 
-### Links and Resources
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### UML
+### Deployment
 
-![UML](./assets/UML.png)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `npm run build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
