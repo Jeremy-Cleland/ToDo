@@ -1,169 +1,146 @@
-import { useEffect } from "react";
-import useForm from "../../Hooks/form";
-import { v4 as uuid } from "uuid";
-import List from "../List";
+import React, { useEffect } from "react";
 
-import { useSettingsContext } from "../../Context/Settings";
+import List from "../List";
+import useForm from "../../Hooks/Form.jsx";
+import { useSettings } from "../../Context/Settings";
+import { v4 as uuid } from "uuid";
+
 import {
-  AppShell,
-  Button,
-  Box,
-  Center,
-  Navbar,
-  Text,
-  Title,
+  Grid,
+  Card,
   Slider,
   TextInput,
+  Text,
+  Button,
   createStyles,
 } from "@mantine/core";
 
-const useStyles = createStyles(() => ({
-  Navbar: {
-    backgroundColor: "#1D1F20",
-    height: "100vh",
-    border: "none",
-    padding: "1rem",
-    boxShadow: "8 0px 0px 8px rgba(0, 0, 0, 0.26)",
-    fontFamily: "Caveat, cursive",
-    borderRadius: "12px",
+const useStyles = createStyles((theme) => ({
+  root: {
+    // display: "flex",
+    // flexDirection: "column",
+    // alignItems: "center",
+    // width: "80%",
+    // margin: "auto",
   },
-  AppShell: {
-    backgroundColor: "#171717",
-    color: "#646E7A",
-    maxHeight: "87vh",
-    marginTop: "-5vh",
-    fontFamily: "Caveat, cursive",
+  card: {
+    // width: 400,
+    // borderRadius: 10,
+    // padding: theme.spacing.md,
   },
-  form: {
-    marginTop: "20vh",
-    backgroundColor: "#454C55",
-    color: "#78838F",
-    height: "60vh",
-    padding: "1rem",
-    textAlign: "left",
-    border: "#303030 1px solid",
-    fontFamily: "Caveat, cursive",
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.26)",
-    borderRadius: "12px",
+  slider: {
+    // marginTop: theme.spacing.md,
+    // marginBottom: theme.spacing.md,
   },
-
   input: {
-    backgroundColor: "#fff",
-    color: "#000",
-    padding: "1rem",
-    margin: "2rem",
-    width: 300,
-    alignContent: "center",
-    border: "#303030 1px solid",
-    fontFamily: "Caveat, cursive",
+    marginTop: theme.spacing.md,
+  },
+  button: {
+    marginTop: theme.spacing.md,
+  },
+  h1: {
+    backgroundColor: theme.colors.gray[8],
+    color: theme.colors.gray[0],
+    width: "80%",
+    margin: "auto",
+    fontSize: theme.fontSizes.lg,
+    padding: theme.spacing.md,
+    marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
 }));
 
-const Todo = () => {
-  const { state, dispatch } = useSettingsContext();
-
+const ToDo = () => {
+  const { classes } = useStyles();
+  const { state, dispatch } = useSettings();
+  const { handleChange, handleSubmit } = useForm(addItem, state);
   // const [list, setList] = useState([]);
   // const [incomplete, setIncomplete] = useState([]);
-  const { handleChange, handleSubmit } = useForm(addItem, state);
-
-  const { classes } = useStyles();
+  // const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
     item.id = uuid();
     item.complete = false;
     console.log(item);
-    dispatch({ type: "ADD_LIST_ITEM", payload: item });
+    dispatch({ type: "ADD_ITEM", payload: item });
   }
 
   let list = state.list;
   let incomplete = state.incomplete;
 
   function deleteItem(id) {
-    dispatch({ type: "DELETE_LIST_ITEM", payload: id });
+    dispatch({ type: "DELETE_ITEM", payload: id });
   }
 
   function toggleComplete(id) {
-    dispatch({ type: "TOGGLE_COMPLETE", payload: id });
+    dispatch({ type: "HANDLE_INCOMPLETED", payload: id });
+    dispatch({ type: "HANDLE_COMPLETE", payload: id });
   }
 
-  function adjustDifficulty(value) {
-    dispatch({ type: "ADJUST_DIFFICULTY", payload: value });
+  function changeDifficulty(value) {
+    dispatch({ type: "CHANGE_DIFFICULTY", payload: value });
   }
 
   useEffect(() => {
     let incompleteCount = list.filter((item) => !item.complete).length;
-    dispatch({ type: "TOGGLE_INCOMPLETE", payload: incompleteCount });
+    dispatch({ type: "HANDLE_INCOMPLETED", payload: incompleteCount });
     document.title = `To Do List: ${state.incomplete}`;
   }, [list]);
 
-  // function updateSettings(settings) {
-  //   dispatch({ type: "TOGGLE_COMPLETED", payload: settings.showCompleted });
-  //   dispatch({ type: "SHOW_ALL_ITEMS", payload: settings.displayNum });
-  // }
-
   return (
-    <AppShell
-      zIndex={10}
-      className={classes.AppShell}
-      sx={{ fontFamily: "Caveat, cursive" }}
-      fixed
-      navbar={
-        <Navbar
-          className={classes.Navbar}
-          height={700}
-          hiddenBreakpoint="sm"
-          open={state.isOpen}
-          width={{ sm: 300, lg: 500, base: "100%" }}
-        >
-          <Navbar.Section>
-            <Box maw={400} mx="auto">
-              <form className={classes.form} onSubmit={handleSubmit}>
-                <TextInput
-                  className={classes.input}
-                  label="To Do Item"
-                  name="text"
-                  mt="md"
-                  onChange={handleChange}
-                />
-                <TextInput
-                  mt="md"
-                  c="white"
-                  className={classes.input}
-                  label="Assigned To"
-                  name="assignee"
-                  onChange={handleChange}
-                />
-                <Slider
-                  className={classes.slider}
-                  label={state.difficulty}
-                  name="difficulty"
-                  onChange={(value) => adjustDifficulty(value)}
-                  min={1}
-                  max={5}
-                  defaultValue={state.difficulty}
-                />
-                <Text sx={{ fontFamily: "Caveat, cursive" }}>Difficulty</Text>
-                <Button className="button" type="submit">
-                  Add Item
-                </Button>
-              </form>
-            </Box>
-          </Navbar.Section>
-        </Navbar>
-      }
-    >
-      <Center pt={100}>
-        <Title>There are {incomplete} Items To Complete</Title>
-      </Center>
-      <Center>
-        <List
-          list={list}
-          toggleComplete={toggleComplete}
-          deleteItem={deleteItem}
-        />
-      </Center>
-    </AppShell>
+    <>
+      <h1 className={classes.h1}>To Do List: {incomplete} items pending</h1>
+      <Grid className={classes.root}>
+        <Grid.Col xs={12} sm={4}>
+          <Card className={classes.card}>
+            <Text className={classes.input}>Add To Do Item</Text>
+            <form onSubmit={handleSubmit}>
+              <TextInput
+                className={classes.input}
+                label="To Do Item"
+                name="text"
+                onChange={handleChange}
+              />
+              <TextInput
+                className={classes.input}
+                label="Assigned To"
+                name="assignee"
+                onChange={handleChange}
+              />
+              <Text className={classes.input}>Difficulty</Text>
+              <Slider
+                className={classes.slider}
+                color="teal"
+                size="xl"
+                radius="xl"
+                label={state.difficulty}
+                name="difficulty"
+                onChange={(value) => changeDifficulty(value)}
+                min={1}
+                max={5}
+                step={1}
+                defaultValue={state.difficulty}
+              />
+              <Button className="button" type="submit">
+                Add Item
+              </Button>
+            </form>
+          </Card>
+        </Grid.Col>
+
+        <Grid.Col xs={12} sm={8}>
+          <Text className={classes.input}>
+            There are {incomplete} Items To Complete
+          </Text>
+          <List
+            list={list}
+            toggleComplete={toggleComplete}
+            deleteItem={deleteItem}
+          />
+        </Grid.Col>
+      </Grid>
+    </>
   );
 };
 
-export default Todo;
+export default ToDo;
