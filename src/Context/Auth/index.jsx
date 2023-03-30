@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
     return user?.capabilities?.includes(capability);
   };
 
-  const _validateToken = (token) => {
+  const validateToken = (token) => {
     try {
       const user = jwtDecode(token);
       if (user) {
@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const cookieToken = cookie.load("auth");
     if (cookieToken) {
-      _validateToken(cookieToken);
+      validateToken(cookieToken);
     }
   }, []);
 
@@ -65,22 +65,20 @@ const AuthProvider = ({ children }) => {
 
     if (authUser && authUser.password === password) {
       try {
-        _validateToken(authUser.token);
+        validateToken(authUser.token);
         return true;
       } catch (e) {
         setError(e, "Invalid Token");
         console.error(e);
         return false;
       }
-    } else {
-      setError("Invalid Login");
-      return false;
     }
   };
 
   const logout = () => {
     setUser({});
     setLoggedIn(false);
+    cookie.remove("auth");
   };
 
   const state = {
@@ -94,5 +92,4 @@ const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
 };
-
 export default AuthProvider;

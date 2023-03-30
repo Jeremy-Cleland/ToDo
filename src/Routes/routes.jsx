@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthContext } from "../Context/Auth";
-import Login from "../Components/Login";
+// import Login from "../Components/Login";
 import ToDo from "../Components/ToDo";
 import Footer from "../Components/Footer";
 import SettingsForm from "../Components/SettingsForm";
@@ -18,7 +18,6 @@ const AppRoutes = () => {
           <Routes>
             <Route path="/" element={<ToDo />} />
             <Route path="/settings" element={<SettingsForm />} />
-            <Route path="/login" element={<Login />} />
           </Routes>
         </When>
         <Footer />

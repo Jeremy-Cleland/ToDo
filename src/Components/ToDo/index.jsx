@@ -24,9 +24,10 @@ const useStyles = createStyles((theme) => ({
     // margin: "auto",
   },
   card: {
-    // width: 400,
-    // borderRadius: 10,
-    // padding: theme.spacing.md,
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+    borderRadius: theme.radius.md,
+    marginTop: theme.spacing.lg,
   },
   slider: {
     // marginTop: theme.spacing.md,
@@ -39,14 +40,16 @@ const useStyles = createStyles((theme) => ({
     marginTop: theme.spacing.md,
   },
   h1: {
-    backgroundColor: theme.colors.gray[8],
-    color: theme.colors.gray[0],
-    width: "80%",
-    margin: "auto",
-    fontSize: theme.fontSizes.lg,
+    // backgroundColor: theme.colors.blue[7],
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+    height: "80px",
     padding: theme.spacing.md,
-    marginTop: theme.spacing.md,
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.lg,
+    borderRadius: theme.radius.md,
+    width: "50%",
+    margin: "auto",
+    textAlign: "center",
   },
 }));
 
@@ -121,7 +124,7 @@ const ToDo = () => {
                 step={1}
                 defaultValue={state.difficulty}
               />
-              <Button className="button" type="submit">
+              <Button color="teal" className="button" type="submit">
                 Add Item
               </Button>
             </form>

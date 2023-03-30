@@ -50,7 +50,7 @@ const List = (props) => {
               <Group>
                 <Badge
                   onClick={() => toggleComplete(item.id)}
-                  color={item.complete ? "red" : "green"}
+                  color={item.complete ? "red" : "teal"}
                   variant="filled"
                   m="3px"
                 >
@@ -69,6 +69,7 @@ const List = (props) => {
         </Card>
       ))}
       <Pagination
+        color="teal"
         className={classes.pagination}
         total={pages}
         page={page}

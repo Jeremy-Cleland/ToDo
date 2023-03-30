@@ -14,6 +14,7 @@ const MyGlobalStyles = () => {
           fontFamily: theme.fontFamily,
           fontSize: theme.fontSizes.md,
           lineHeight: theme.lineHeight,
+          backgroundColor: theme.colors.dark[9],
         },
         "body, input, button, textarea, select": {
           font: "inherit",
