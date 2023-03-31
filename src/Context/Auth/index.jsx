@@ -65,7 +65,7 @@ const LoginProvider = ({ children }) => {
     validateToken(token);
   }, []);
 
-  const state = {
+  const values = {
     user,
     loggedIn,
     error,
@@ -75,7 +75,7 @@ const LoginProvider = ({ children }) => {
   };
 
   return (
-    <LoginContext.Provider value={state}>{children}</LoginContext.Provider>
+    <LoginContext.Provider value={values}>{children}</LoginContext.Provider>
   );
 };
 export default LoginProvider;
