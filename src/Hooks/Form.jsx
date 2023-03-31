@@ -9,12 +9,14 @@ const useForm = (callback, defaultValues = {}) => {
   };
 
   const handleChange = (event) => {
-    let name, value;
+    let name;
+    let value;
+
     if (typeof event === "object") {
       name = event.target.name;
       value = event.target.value;
     } else {
-      console.log("event from slider", event);
+      // console.log("event from slider", event);
       // hard coded for Mantine slider functionality
       // change 'difficulty' language if desired
       // change name dynamically if doing stretch goal!

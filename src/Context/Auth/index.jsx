@@ -12,6 +12,20 @@ const LoginProvider = ({ children }) => {
     return user?.capabilities?.includes(capability);
   };
 
+  const validateToken = (token) => {
+    try {
+      const validUser = jwt_decode(token);
+      setLoggedIn(true);
+      setUser(validUser);
+      cookie.save("auth", token);
+    } catch (e) {
+      setLoggedIn(false);
+      setUser({ capabilities: [] });
+      setError(e);
+      console.log("Token Validation Error", e);
+    }
+  };
+
   const login = async (username, password) => {
     // const authUser = testUsers[username];
     let config = {
@@ -21,10 +35,10 @@ const LoginProvider = ({ children }) => {
       auth: { username, password },
     };
 
-    let response = await axios(config);
+    const response = await axios(config);
 
     // let response = response.data.user;
-    let token = response.data.token;
+    const token = response.data.token;
 
     if (token) {
       try {
@@ -42,20 +56,6 @@ const LoginProvider = ({ children }) => {
     setUser({});
     setLoggedIn(false);
     // cookie.remove("auth");
-  };
-
-  const validateToken = (token) => {
-    try {
-      let validUser = jwt_decode(token);
-      setLoggedIn(true);
-      setUser(validUser);
-      cookie.save("auth", token);
-    } catch (e) {
-      setLoggedIn(false);
-      setUser({ capabilities: [] });
-      setError(e);
-      console.log("Token Validation Error", e);
-    }
   };
 
   useEffect(() => {
