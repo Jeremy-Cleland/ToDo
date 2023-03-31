@@ -1,8 +1,8 @@
 import React from "react";
-// import MyGlobalStyles from "./Context/Styles/globalStyles";
-import AuthProvider from "./Context/Auth";
+import MyGlobalStyles from "./Context/Styles/globalStyles";
+import LoginProvider from "./Context/Auth";
 import AppRoutes from "./Routes/routes";
-import { SettingsProvider } from "./Context/Settings";
+import SettingsProvider from "./Context/Settings";
 import { MantineProvider } from "@mantine/core";
 
 const App = () => {
@@ -14,12 +14,12 @@ const App = () => {
       withGlobalStyles
       withNormalizeCSS
     >
-      <AuthProvider>
+      <LoginProvider>
         <SettingsProvider>
           <AppRoutes />
-          {/* <MyGlobalStyles /> */}
+          <MyGlobalStyles />
         </SettingsProvider>
-      </AuthProvider>
+      </LoginProvider>
     </MantineProvider>
   );
 };

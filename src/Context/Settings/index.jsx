@@ -1,80 +1,45 @@
-import React, { useReducer, useContext, useEffect, createContext } from "react";
+import React, { useState, useEffect } from "react";
 
-const SettingsContext = createContext();
-
-const initialState = {
-  showSorted: "Keyword",
-  showCompleted: true,
-  difficulty: 4,
-  numDisplayed: 3,
-  incomplete: [],
-  list: [],
-};
-
-const settingsReducer = (state, action) => {
-  const { type, payload } = action;
-  switch (type) {
-    case "SHOW_COMPLETED":
-      return { ...state, showCompleted: !state.showCompleted };
-    case "SHOW_SORTED":
-      return { ...state, showSorted: payload };
-    case "NUMBER_DISPLAYED":
-      return { ...state, numDisplayed: payload };
-    case "ADD_ITEM":
-      return { ...state, list: [...state.list, payload] };
-    case "DELETE_ITEM":
-      return {
-        ...state,
-        list: state.list.filter((item) => item.id !== payload),
-      };
-    case "HANDLE_COMPLETE":
-      return {
-        ...state,
-        list: state.list.map((item) => {
-          if (item.id === payload) {
-            return { ...item, complete: !item.complete };
-          }
-          return item;
-        }),
-      };
-    case "HANDLE_INCOMPLETED":
-      return { ...state, incomplete: payload };
-    case "CHANGE_DIFFICULTY":
-      return { ...state, difficulty: payload };
-    case "GET_ITEMS":
-      return { ...state, list: payload };
-    default:
-      return state;
-  }
-};
+export const SettingsContext = React.createContext();
 
 const SettingsProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(settingsReducer, initialState);
+  const [pageItems, setPageItems] = useState(3);
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [showSorted, setShowSorted] = useState("difficulty");
+
+  const saveLocal = () => {
+    localStorage.setItem("pageItems", JSON.stringify(pageItems));
+    localStorage.setItem("showCompleted", JSON.stringify(showCompleted));
+    localStorage.setItem("showSorted", JSON.stringify(showSorted));
+  };
+
+  const context = {
+    pageItems,
+    setPageItems,
+    showCompleted,
+    setShowCompleted,
+    showSorted,
+    setShowSorted,
+    saveLocal,
+  };
+
   useEffect(() => {
-    const storedSettings = JSON.parse(localStorage.getItem("settings"));
-    if (storedSettings) {
-      dispatch({
-        type: "SHOW_COMPLETED",
-        payload: storedSettings.showCompleted,
-      });
-      dispatch({
-        type: "NUMBER_DISPLAYED",
-        payload: storedSettings.numDisplayed,
-      });
-      dispatch({ type: "SHOW_SORTED", payload: storedSettings.showSorted });
+    const localPageItems = JSON.parse(localStorage.getItem("pageItems"));
+    const localShowCompleted = JSON.parse(
+      localStorage.getItem("showCompleted")
+    );
+    const localShowSorted = JSON.parse(localStorage.getItem("showSorted"));
+    if (localPageItems) {
+      setPageItems(JSON.parse(localPageItems));
+    }
+    if (localShowCompleted) {
+      setShowCompleted(JSON.parse(localShowCompleted));
+    }
+    if (localShowSorted) {
+      setShowSorted(JSON.parse(localShowSorted));
     }
   }, []);
 
-  const saveSettings = () => {
-    const settings = {
-      showSorted: state.showSorted,
-      numDisplayed: state.numDisplayed,
-      showCompleted: state.showCompleted,
-    };
-    localStorage.setItem("settings", JSON.stringify(settings));
-  };
-
-  const context = { state, dispatch, saveSettings };
   return (
     <SettingsContext.Provider value={context}>
       {children}
@@ -82,12 +47,4 @@ const SettingsProvider = ({ children }) => {
   );
 };
 
-const useSettings = () => {
-  const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error("You must use useSettings within a SettingsProvider");
-  }
-  return context;
-};
-
-export { SettingsProvider, useSettings };
+export default SettingsProvider;

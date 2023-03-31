@@ -1,36 +1,58 @@
-import { createStyles, Group, Header, Navbar } from "@mantine/core";
+import { createStyles, Text, Group, Header, Navbar } from "@mantine/core";
+import Login from "../Login";
 import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
-  navbar: {
-    backgroundColor: theme.colors.blue[7],
-    height: "100%",
+  header: {
+    // backgroundColor: theme.colors.blue[7],
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[9] : theme.white,
+    padding: theme.spacing.lg,
+    width: "100%",
+    height: "120px",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    border: "none",
   },
   link: {
-    color: theme.colors.gray[0],
-    fontSize: theme.fontSizes.md,
-    padding: theme.spacing.md,
     textDecoration: "none",
+    color: "inherit",
+  },
+  login: {
+    display: "flex",
+  },
+  navbar: {
+    // backgroundColor: theme.colors.blue[7],
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+    height: "60px",
+    padding: theme.spacing.md,
+    margin: theme.spacing.lg,
+    borderRadius: theme.radius.md,
   },
 }));
 
 const HeaderComponent = () => {
   const { classes } = useStyles();
   return (
-    <Header>
+    <Header className={classes.header}>
       <Navbar className={classes.navbar}>
         <Group>
-          <Link className={classes.link} to="/" default>
-            Home
+          <Link to="/" className={classes.link} default>
+            <Text size="md" weight="bold">
+              Home
+            </Text>
           </Link>
-          <Link className={classes.link} to="/settings">
-            Settings
-          </Link>
-          <Link className={classes.link} to="/login">
-            Login
+          <Link to="/settings" className={classes.link} default>
+            <Text size="md" weight="bold">
+              Settings
+            </Text>
           </Link>
         </Group>
       </Navbar>
+      <Login className={classes.login} />
     </Header>
   );
 };

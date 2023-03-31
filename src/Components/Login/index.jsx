@@ -1,66 +1,64 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../Context/Auth";
-import { Button, Text, TextInput, createStyles } from "@mantine/core";
-import { If, Then, Else } from "react-if";
+import { LoginContext } from "../../Context/Auth";
+import { Button, TextInput, Group, createStyles } from "@mantine/core";
+import { When } from "react-if";
 
 const useStyles = createStyles((theme) => ({
   root: {
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   input: {
     marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.md,
   },
   button: {
-    marginTop: theme.spacing.md,
-    marginBottom: theme.spacing.md,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "2.5rem",
   },
 }));
 
 const Login = () => {
-  const { login, loggedIn, logout } = useContext(AuthContext);
+  const { login, loggedIn, logout } = useContext(LoginContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { classes } = useStyles();
 
-  const handleLogout = () => {
-    setUsername("");
-    setPassword("");
-    logout();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(username, password);
   };
 
   return (
-    <div className={classes.root}>
-      <If condition={loggedIn}>
-        <Then>
-          <Text>Welcome {username}!</Text>
-          <Button onClick={handleLogout}>Logout</Button>
-        </Then>
-        <Else>
-          <Text>Login</Text>
-          <TextInput
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className={classes.input}
-          />
-          <TextInput
-            label="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={classes.input}
-          />
-          <Button
-            onClick={() => login(username, password)}
-            className={classes.button}
-          >
-            Login
-          </Button>
-        </Else>
-      </If>
-    </div>
+    <>
+      <When>
+        <Button onClick={logout}>Log Out</Button>
+      </When>
+
+      <When condition={!loggedIn}>
+        <Group>
+          <form onSubmit={handleSubmit} className={classes.root}>
+            <TextInput
+              className={classes.input}
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextInput
+              className={classes.input}
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button className={classes.button} type="submit">
+              Log In
+            </Button>
+          </form>
+        </Group>
+      </When>
+    </>
   );
 };
 

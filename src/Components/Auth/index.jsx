@@ -1,13 +1,14 @@
 import { useContext } from "react";
-import { AuthContext } from "../../Context/Auth";
+import { LoginContext } from "../../Context/Auth";
 import { When } from "react-if";
 
 const Auth = ({ capability, children }) => {
-  const { isLoggedIn, can } = useContext(AuthContext);
+  const { loggedIn, can } = useContext(LoginContext);
 
-  // if the user is logged in and has the capability, render the children
-  const okToRender = isLoggedIn && can(capability);
-  // when the user is logged in and has the capability, render the children
+  const isLoggedIn = loggedIn;
+  const canDo = capability ? can(capability) : true;
+
+  const okToRender = isLoggedIn && canDo;
   return <When condition={okToRender}>{children}</When>;
 };
 
