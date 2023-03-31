@@ -11,7 +11,7 @@ const useForm = (callback, defaultValues = {}) => {
   const handleChange = (event) => {
     let name;
     let value;
-
+    
     if (typeof event === "object") {
       name = event.target.name;
       value = event.target.value;

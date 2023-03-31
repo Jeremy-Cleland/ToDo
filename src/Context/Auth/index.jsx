@@ -28,7 +28,7 @@ const LoginProvider = ({ children }) => {
 
   const login = async (username, password) => {
     // const authUser = testUsers[username];
-    let config = {
+    const config = {
       method: "post",
       baseURL: "https://api-js401.herokuapp.com",
       url: "/signin",
