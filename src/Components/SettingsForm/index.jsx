@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { useSettings } from "../../Context/Settings";
+import React, { useContext, useState } from "react";
+import { SettingsContext } from "../../Context/Settings";
 import {
   TextInput,
   Checkbox,
   Button,
   Card,
   Text,
+  Title,
   Grid,
+  Group,
   createStyles,
 } from "@mantine/core";
-import { When } from "react-if";
+
 const useStyles = createStyles((theme) => ({
   root: {
     display: "flex",
@@ -23,20 +25,28 @@ const useStyles = createStyles((theme) => ({
     marginTop: theme.spacing.md,
     marginBottom: theme.spacing.md,
   },
+  group: {
+    marginTop: theme.spacing.md,
+  },
 }));
 
 const SettingsForm = () => {
-  const { state, dispatch, saveSettings } = useSettings();
-  // const { handleChange, handleSubmit } = props;
-  const [show, setShow] = useState(false);
-
   const { classes } = useStyles();
+  const [show, setShow] = useState(false);
+  const {
+    pageItems,
+    setPageItems,
+    showCompleted,
+    setShowCompleted,
+    showSorted,
+    setShowSorted,
+    saveLocal,
+  } = useContext(SettingsContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submitting");
     setShow(true);
-    saveSettings();
+    saveLocal();
   };
 
   return (
@@ -47,26 +57,22 @@ const SettingsForm = () => {
             <Text>Settings</Text>
             <Checkbox
               label="Show Completed"
-              checked={state.showCompleted}
-              onChange={() => dispatch({ type: "SHOW_COMPLETED" })}
-              className={classes.input}
+              checked={showCompleted}
+              onChange={(e) => setShowCompleted(e.target.checked)}
             />
             <TextInput
+              className={classes.input}
               label="Number of Items to Display"
               type="number"
-              value={state.numDisplayed}
-              onChange={(e) =>
-                dispatch({ type: "NUMBER_DISPLAYED", payload: e.target.value })
-              }
-              className={classes.input}
+              value={pageItems}
+              onChange={(e) => setPageItems(e.target.value)}
             />
             <TextInput
-              label="Sort Keyword"
-              checked={state.showSorted}
-              onChange={(e) =>
-                dispatch({ type: "SHOW_SORTED", payload: e.target.value })
-              }
               className={classes.input}
+              label="Sort By"
+              checked={showSorted}
+              placeholder="difficulty"
+              onChange={(e) => setShowSorted(e.target.value)}
             />
             <Button type="submit" className={classes.button}>
               Save
@@ -75,21 +81,16 @@ const SettingsForm = () => {
           </form>
         </Card>
       </Grid.Col>
+
       <Grid.Col xs={12} sm={6}>
-        <When condition={show}>
-          <Card withBorder>
-            <Card.Section>
-              <Text m="xl" fontSize="xl" weight="bold">
-                Updated Settings
-              </Text>
-            </Card.Section>
-            <Text m="md">
-              {state.showCompleted ? "Show:" : "Hide"} Show Completed Tasks
-            </Text>
-            <Text m="md">Items Per page: {state.numDisplayed}</Text>
-            <Text m="md">Sort by Keyword: {state.showSorted}</Text>
-          </Card>
-        </When>
+        {show && (
+          <Group className={classes.group}>
+            <Title order={3}>Updated Settings</Title>
+            <Text>Show Completed Taks: {showCompleted ? "yes" : "no"}</Text>
+            <Text>Tasks per page: {pageItems}</Text>
+            <Text>Sort Tasks by: {showSorted}</Text>
+          </Group>
+        )}
       </Grid.Col>
     </Grid>
   );

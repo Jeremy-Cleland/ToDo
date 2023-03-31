@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../Context/Auth";
+import { LoginContext } from "../../Context/Auth";
 import { Button, TextInput, Group, createStyles } from "@mantine/core";
-import { If, Then, Else } from "react-if";
+import { When } from "react-if";
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -22,56 +22,43 @@ const useStyles = createStyles((theme) => ({
 }));
 
 const Login = () => {
-  const { login, loggedIn, logout } = useContext(AuthContext);
+  const { login, loggedIn, logout } = useContext(LoginContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const { classes } = useStyles();
 
-  const handleLogin = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     login(username, password);
   };
 
-  const handleLogout = () => {
-    setUsername("");
-    setPassword("");
-    logout();
-  };
-
   return (
-    <Group align="right" className={classes.root}>
-      <If condition={loggedIn}>
-        <Then>
-          <Button color="teal" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Then>
-        <Else>
-          <TextInput
-            label="Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className={classes.input}
-          />
-          <TextInput
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={classes.input}
-          />
-          <Button
-            type="submit"
-            className={classes.button}
-            onClick={handleLogin}
-          >
-            Login
-          </Button>
-        </Else>
-      </If>
-    </Group>
+    <>
+      <When>
+        <Button onClick={logout}>Log Out</Button>
+      </When>
+
+      <When condition={!loggedIn}>
+        <Group>
+          <form onSubmit={handleSubmit} className={classes.root}>
+            <TextInput
+              className={classes.input}
+              placeholder="Username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextInput
+              className={classes.input}
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button className={classes.button} type="submit">
+              Log In
+            </Button>
+          </form>
+        </Group>
+      </When>
+    </>
   );
 };
 

@@ -1,10 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import useForm from "../../Hooks/Form.jsx";
 
 import List from "../List";
-import useForm from "../../Hooks/Form.jsx";
-import { useSettings } from "../../Context/Settings";
-import { v4 as uuid } from "uuid";
-
 import {
   Grid,
   Card,
@@ -14,25 +11,19 @@ import {
   Button,
   createStyles,
 } from "@mantine/core";
+import Auth from "../Auth/index.jsx";
+import axios from "axios";
+
+// import { v4 as uuid } from "uuid";
 
 const useStyles = createStyles((theme) => ({
-  root: {
-    // display: "flex",
-    // flexDirection: "column",
-    // alignItems: "center",
-    // width: "80%",
-    // margin: "auto",
-  },
   card: {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
     borderRadius: theme.radius.md,
     marginTop: theme.spacing.lg,
   },
-  slider: {
-    // marginTop: theme.spacing.md,
-    // marginBottom: theme.spacing.md,
-  },
+  slider: {},
   input: {
     marginTop: theme.spacing.md,
   },
@@ -55,85 +46,118 @@ const useStyles = createStyles((theme) => ({
 
 const ToDo = () => {
   const { classes } = useStyles();
-  const { state, dispatch } = useSettings();
-  const { handleChange, handleSubmit } = useForm(addItem, state);
-  // const [list, setList] = useState([]);
-  // const [incomplete, setIncomplete] = useState([]);
-  // const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
+  const [defaultValues] = useState({
+    difficulty: 4,
+  });
+  const [list, setList] = useState([]);
+  const [incomplete, setIncomplete] = useState([]);
+
+  const { handleChange, handleSubmit } = useForm(addItem, defaultValues);
 
   function addItem(item) {
-    item.id = uuid();
-    item.complete = false;
-    console.log(item);
-    dispatch({ type: "ADD_ITEM", payload: item });
+    try {
+      const url = "https://api-js401.herokuapp.com/api/v1/todo";
+      const method = "post";
+      const data = item;
+      item.complete = false;
+      axios({ url, method, data });
+      setList([...list, item]);
+    } catch (error) {
+      console.error(error);
+    }
   }
-
-  let list = state.list;
-  let incomplete = state.incomplete;
 
   function deleteItem(id) {
-    dispatch({ type: "DELETE_ITEM", payload: id });
+    try {
+      const url = `https://api-js401.herokuapp.com/api/v1/todo/${id}`;
+      const method = "delete";
+      axios({ url, method });
+      setList(list.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error(error);
+    }
   }
-
   function toggleComplete(id) {
-    dispatch({ type: "HANDLE_INCOMPLETED", payload: id });
-    dispatch({ type: "HANDLE_COMPLETE", payload: id });
-  }
-
-  function changeDifficulty(value) {
-    dispatch({ type: "CHANGE_DIFFICULTY", payload: value });
+    try {
+      const url = `https://api-js401.herokuapp.com/api/v1/todo/${id}`;
+      const method = "put";
+      const data = { complete: true };
+      axios({ url, method, data });
+      setList(
+        list.map((item) =>
+          item._id === id ? { ...item, complete: true } : item
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {
-    let incompleteCount = list.filter((item) => !item.complete).length;
-    dispatch({ type: "HANDLE_INCOMPLETED", payload: incompleteCount });
-    document.title = `To Do List: ${state.incomplete}`;
+    const incomplete = list.filter((item) => !item.complete);
+    setIncomplete(incomplete.length);
+    document.title = `Task List: ${incomplete.length} Tasks Pending`;
   }, [list]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const url = "https://api-js401.herokuapp.com/api/v1/todo";
+        const method = "get";
+        const response = await axios({ url, method });
+        setList(response.data.results);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
 
   return (
     <>
-      <h1 className={classes.h1}>To Do List: {incomplete} items pending</h1>
+      <h1 className={classes.h1}>
+        Task List: {incomplete.length} Tasks Pending
+      </h1>
       <Grid className={classes.root}>
-        <Grid.Col xs={12} sm={4}>
-          <Card className={classes.card}>
-            <Text className={classes.input}>Add To Do Item</Text>
-            <form onSubmit={handleSubmit}>
-              <TextInput
-                className={classes.input}
-                label="To Do Item"
-                name="text"
-                onChange={handleChange}
-              />
-              <TextInput
-                className={classes.input}
-                label="Assigned To"
-                name="assignee"
-                onChange={handleChange}
-              />
-              <Text className={classes.input}>Difficulty</Text>
-              <Slider
-                className={classes.slider}
-                color="teal"
-                size="xl"
-                radius="xl"
-                label={state.difficulty}
-                name="difficulty"
-                onChange={(value) => changeDifficulty(value)}
-                min={1}
-                max={5}
-                step={1}
-                defaultValue={state.difficulty}
-              />
-              <Button color="teal" className="button" type="submit">
-                Add Item
-              </Button>
-            </form>
-          </Card>
-        </Grid.Col>
-
+        <Auth capability="create">
+          <Grid.Col xs={12} sm={4}>
+            <Card className={classes.card}>
+              <Text className={classes.input}>Add To Do Item</Text>
+              <form onSubmit={handleSubmit}>
+                <TextInput
+                  className={classes.input}
+                  label="To Do Item"
+                  name="text"
+                  onChange={handleChange}
+                />
+                <TextInput
+                  className={classes.input}
+                  label="Assigned To"
+                  name="assignee"
+                  onChange={handleChange}
+                />
+                <Text className={classes.input}>Difficulty</Text>
+                <Slider
+                  className={classes.slider}
+                  color="teal"
+                  size="xl"
+                  radius="xl"
+                  name="difficulty"
+                  onChange={handleChange}
+                  min={1}
+                  max={5}
+                  step={1}
+                />
+                <Button color="teal" className="button" type="submit">
+                  Add Item
+                </Button>
+              </form>
+            </Card>
+          </Grid.Col>
+        </Auth>
         <Grid.Col xs={12} sm={8}>
           <Text className={classes.input}>
-            There are {incomplete} Items To Complete
+            There are {incomplete.length} Items To Complete
           </Text>
           <List
             list={list}
