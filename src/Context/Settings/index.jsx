@@ -8,12 +8,12 @@ const SettingsProvider = ({ children }) => {
   const [showSorted, setShowSorted] = useState("difficulty");
 
   const saveLocal = () => {
-    localStorage.setItem("pageItems", JSON.stringify(pageItems));
+    localStorage.setItem("pageItems", JSON.stringify(+pageItems));
     localStorage.setItem("showCompleted", JSON.stringify(showCompleted));
     localStorage.setItem("showSorted", JSON.stringify(showSorted));
   };
 
-  const context = {
+  const values = {
     pageItems,
     setPageItems,
     showCompleted,
@@ -24,11 +24,10 @@ const SettingsProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const localPageItems = JSON.parse(localStorage.getItem("pageItems"));
-    const localShowCompleted = JSON.parse(
-      localStorage.getItem("showCompleted")
-    );
-    const localShowSorted = JSON.parse(localStorage.getItem("showSorted"));
+    const localPageItems = localStorage.getItem("pageItems");
+    const localShowCompleted = localStorage.getItem("showCompleted");
+    const localShowSorted = localStorage.getItem("showSorted");
+
     if (localPageItems) {
       setPageItems(JSON.parse(localPageItems));
     }
@@ -41,7 +40,7 @@ const SettingsProvider = ({ children }) => {
   }, []);
 
   return (
-    <SettingsContext.Provider value={context}>
+    <SettingsContext.Provider value={values}>
       {children}
     </SettingsContext.Provider>
   );
