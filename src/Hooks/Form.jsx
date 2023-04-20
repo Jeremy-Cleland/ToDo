@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useForm = (callback, defaultValues = {}) => {
   const [values, setValues] = useState({});
@@ -11,7 +11,7 @@ const useForm = (callback, defaultValues = {}) => {
   const handleChange = (event) => {
     let name;
     let value;
-    
+
     if (typeof event === "object") {
       name = event.target.name;
       value = event.target.value;

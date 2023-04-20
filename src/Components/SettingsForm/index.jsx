@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { SettingsContext } from "../../Context/Settings";
 import {
   TextInput,

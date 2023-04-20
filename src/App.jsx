@@ -1,4 +1,3 @@
-import React from "react";
 import MyGlobalStyles from "./Context/Styles/globalStyles";
 import LoginProvider from "./Context/Auth";
 import AppRoutes from "./Routes/routes";

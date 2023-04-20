@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LoginContext } from "../Context/Auth";
 // import Login from "../Components/Login";
@@ -11,7 +11,6 @@ import { When } from "react-if";
 const AppRoutes = () => {
   const { loggedIn } = useContext(LoginContext);
   return (
-    <>
       <BrowserRouter>
         <HeaderComponent />
         <When condition={loggedIn}>
@@ -22,7 +21,6 @@ const AppRoutes = () => {
         </When>
         <Footer />
       </BrowserRouter>
-    </>
   );
 };
 

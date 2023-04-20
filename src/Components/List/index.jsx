@@ -1,16 +1,16 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { SettingsContext } from "../../Context/Settings";
 import { Else, If, Then } from "react-if";
 import { LoginContext } from "../../Context/Auth";
 import Auth from "../Auth";
 import {
-  Card,
-  Text,
-  Button,
-  Group,
   Badge,
-  Pagination,
+  Button,
+  Card,
   createStyles,
+  Group,
+  Pagination,
+  Text,
   // CloseButton,
 } from "@mantine/core";
 
